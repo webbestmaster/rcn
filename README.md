@@ -1,2 +1,2 @@
-# rcn
+# RCN
 React Class Name
