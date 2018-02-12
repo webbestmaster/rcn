@@ -4,7 +4,7 @@
 const {assert} = require('chai');
 const rcn = require('./../index');
 
-describe('rcn', () => {
+describe('RCN', () => {
     it('react feature', () => {
         assert(rcn('a', 0, null, undefined, true, 1, 'b').className === 'a 1 b');
     });
