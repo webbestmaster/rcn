@@ -1,5 +1,11 @@
-function rcnToString() {
-    return this.className; // eslint-disable-line no-invalid-this
+class Rcn {
+    constructor(classList) {
+        this.className = classList.join(' ');
+    }
+
+    toString() {
+        return this.className;
+    }
 }
 
 function pushClass(result, candidate) { // eslint-disable-line complexity
@@ -59,10 +65,7 @@ function classNames() {
         pushClass(result, arguments[ii]);
     }
 
-    return {
-        className: result.join(' '),
-        toString: rcnToString
-    };
+    return new Rcn(result);
 }
 
 module.exports = classNames;
