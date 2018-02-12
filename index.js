@@ -41,9 +41,9 @@ function pushClassString(result, string) {
 
 function pushClassArray(result, array) {
     let ii = 0;
-    const len = array.length;
+    const {length} = array;
 
-    for (; ii < len; ii += 1) {
+    for (; ii < length; ii += 1) {
         pushClass(result, array[ii]);
     }
 
