@@ -2,7 +2,8 @@
 /* eslint-disable id-length, no-undefined */
 
 const {assert} = require('chai');
-const rcn = require('./../index');
+const rcn = require('./../project/index');
+// const rcn = require('./../index');
 
 describe('RCN', () => {
     it('react feature', () => {

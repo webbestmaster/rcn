@@ -1,71 +1,109 @@
-class Rcn {
-    constructor(classList) {
-        this.className = classList.join(' ');
-    }
+/*
+  Copyright (c) 2018 Dmitry Turovtsov
+  Licensed under the MIT License (MIT), see
+  https://github.com/webbestmaster/rcn
+*/
 
-    toString() {
-        return this.className;
-    }
-}
+/* global define */
 
-function pushClass(result, candidate) { // eslint-disable-line complexity
-    if (!candidate) {
+(function () {
+    'use strict';
+
+    var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+    var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+    function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+    var Rcn = function () {
+        function Rcn(classList) {
+            _classCallCheck(this, Rcn);
+
+            this.className = classList.join(' ');
+        }
+
+        _createClass(Rcn, [{
+            key: 'toString',
+            value: function toString() {
+                return this.className;
+            }
+        }]);
+
+        return Rcn;
+    }();
+
+    function pushClass(result, candidate) {
+        // eslint-disable-line complexity
+        if (!candidate) {
+            return result;
+        }
+
+        var candidateType = typeof candidate === 'undefined' ? 'undefined' : _typeof(candidate);
+
+        if (Array.isArray(candidate)) {
+            return pushClassArray(result, candidate);
+        }
+
+        if (candidateType === 'object') {
+            return pushClassObject(result, candidate);
+        }
+
+        if (candidateType === 'string' || candidateType === 'number') {
+            return pushClassString(result, candidate);
+        }
+
         return result;
     }
 
-    const candidateType = typeof candidate;
-
-    if (Array.isArray(candidate)) {
-        return pushClassArray(result, candidate);
-    }
-
-    if (candidateType === 'object') {
-        return pushClassObject(result, candidate);
-    }
-
-    if (candidateType === 'string' || candidateType === 'number') {
-        return pushClassString(result, candidate);
-    }
-
-    return result;
-}
-
-function pushClassObject(result, object) {
-    for (const key in object) {
-        if (object.hasOwnProperty(key) && object[key]) {
-            result.push(key);
+    function pushClassObject(result, object) {
+        for (var key in object) {
+            if (object.hasOwnProperty(key) && object[key]) {
+                result.push(key);
+            }
         }
+
+        return result;
     }
 
-    return result;
-}
-
-function pushClassString(result, string) {
-    result.push(string);
-    return result;
-}
-
-function pushClassArray(result, array) {
-    let ii = 0;
-    const {length} = array;
-
-    for (; ii < length; ii += 1) {
-        pushClass(result, array[ii]);
+    function pushClassString(result, string) {
+        result.push(string);
+        return result;
     }
 
-    return result;
-}
+    function pushClassArray(result, array) {
+        var ii = 0;
+        var length = array.length;
 
-function classNames() {
-    const result = [];
-    const {length} = arguments;
-    let ii = 0;
 
-    for (; ii < length; ii += 1) {
-        pushClass(result, arguments[ii]);
+        for (; ii < length; ii += 1) {
+            pushClass(result, array[ii]);
+        }
+
+        return result;
     }
 
-    return new Rcn(result);
-}
+    function rcn() {
+        var result = [];
+        var length = arguments.length;
 
-module.exports = classNames;
+        var ii = 0;
+
+        for (; ii < length; ii += 1) {
+            pushClass(result, arguments[ii]);
+        }
+
+        return new Rcn(result);
+    }
+
+    if (typeof module !== 'undefined' && module.exports) {
+        rcn.default = rcn;
+        module.exports = rcn;
+    } else if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
+        // register as 'rcn', consistent with npm package name
+        define('rcn', [], function () {
+            return rcn;
+        });
+    } else {
+        window.rcn = rcn;
+    }
+}());
